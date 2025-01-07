@@ -13,7 +13,7 @@ export class UserService {
   private currentUserSubject = new BehaviorSubject<IUser | null>(null);
 currentUser$ = this.currentUserSubject.asObservable();
 
-  private baseUrl = 'http://localhost:4444';
+  private baseUrl = 'https://blog-management-backend-iyk6.onrender.com';
 
   constructor(private http: HttpClient) {
     const user = localStorage.getItem('currentUser');

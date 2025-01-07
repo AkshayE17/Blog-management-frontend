@@ -7,7 +7,7 @@ import { IBlog } from '../state/user/userState';  // Assuming IBlog is defined p
   providedIn: 'root'
 })
 export class BlogService {
-  private baseUrl = 'http://localhost:4444/blogs';  // Adjust the base URL as needed
+  private baseUrl = 'https://blog-management-backend-iyk6.onrender.com/blogs';  // Adjust the base URL as needed
 
   constructor(private http: HttpClient) { }
 
