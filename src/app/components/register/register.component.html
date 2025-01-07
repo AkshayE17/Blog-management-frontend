@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full mx-auto space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+    <div class="text-center">
+      <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Create Account</h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">Join our community today</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <!-- Profile Image -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Profile Image</label>
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+        >
+        <div *ngIf="imagePreview" class="mt-3">
+          <img [src]="imagePreview" alt="Selected Image" class="h-20 w-20 rounded-full object-cover mx-auto shadow-md">
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Full Name</label>
+        <input
+          formControlName="name"
+          type="text"
+          name="name"
+          class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+          [class.border-red-500]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+        >
+        <p *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="mt-1 text-sm text-red-500">
+          Name is required
+        </p>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+        <input
+          formControlName="email"
+          type="email"
+          name="email"
+          class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+          [class.border-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        >
+        <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="mt-1 text-sm text-red-500">
+          Please enter a valid email
+        </p>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
+        <div class="relative">
+          <input
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+            [class.border-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          >
+          <span
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-300"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </span>
+        </div>
+        <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="mt-1 text-sm text-red-500">
+          Password must be at least 6 characters
+        </p>
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirm Password</label>
+        <div class="relative">
+          <input
+            formControlName="confirmPassword"
+            [type]="showPassword ? 'text' : 'password'"
+            class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+            [class.border-red-500]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+          >
+          <span
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500 dark:text-gray-300"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </span>
+        </div>
+        <p *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="mt-1 text-sm text-red-500">
+          Passwords must match
+        </p>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid || isLoading"
+        class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        {{ isLoading ? 'Creating account...' : 'Create Account' }}
+      </button>
+
+      <!-- Sign in link -->
+      <p class="text-center text-sm text-gray-600 dark:text-gray-300">
+        Already have an account?
+        <a routerLink="/login" class="cursor-pointer font-medium text-blue-600 hover:text-blue-500 dark:text-purple-400 dark:hover:text-purple-300">Sign in</a>
+      </p>
+    </form>
+  </div>
+</div>

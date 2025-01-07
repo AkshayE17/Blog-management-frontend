@@ -1,0 +1,42 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+    <!-- Success Icon -->
+    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 dark:bg-green-900">
+      <svg class="h-10 w-10 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+
+    <!-- Success Message -->
+    <div class="space-y-4">
+      <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        Verification Successful!
+      </h2>
+      <p class="text-gray-600 dark:text-gray-300">
+        Your account has been successfully verified. You can now proceed to login or return home.
+      </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 space-y-4">
+      <button
+        (click)="navigateToLogin()"
+        class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition-all duration-300"
+      >
+        Proceed to Login
+      </button>
+      
+      <button
+        (click)="navigateToHome()"
+        class="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform hover:scale-105 transition-all duration-300"
+      >
+        Return to Home
+      </button>
+    </div>
+
+    <!-- Optional Additional Info -->
+    <div class="mt-6 text-sm text-gray-500 dark:text-gray-400">
+      Need help? <a href="/support" class="text-blue-600 dark:text-purple-400 hover:underline">Contact Support</a>
+    </div>
+  </div>
+</div>

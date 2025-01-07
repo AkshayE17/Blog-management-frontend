@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full mx-auto space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+    <div class="text-center">
+      <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Enter OTP</h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">Please enter the verification code</p>
+    </div>
+
+    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <div>
+        <div class="mt-2 flex justify-center space-x-4">
+          <ng-container *ngFor="let digit of digits; let i = index">
+            <input
+              #otpInput
+              [formControlName]="'digit' + i"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              [attr.data-index]="i"
+              (input)="handleInput($event, i)"
+              (keydown)="handleKeydown($event, i)"
+              (focus)="(inputFocus($event))"
+              (paste)="handlePaste($event)"
+              class="w-12 h-12 text-center text-2xl border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+            >
+          </ng-container>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="otpForm.invalid || isLoading"
+        class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        {{ isLoading ? 'Verifying...' : 'Verify OTP' }}
+      </button>
+
+      <div class="text-center">
+        <button 
+          type="button"
+          [disabled]="timeLeft > 0"
+          (click)="resendOtp()"
+          class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-purple-400 dark:hover:text-purple-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {{ timeLeft > 0 ? 'Resend OTP in ' + timeLeft + 's' : 'Resend OTP' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

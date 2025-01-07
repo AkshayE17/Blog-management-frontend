@@ -1,0 +1,107 @@
+<main class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="space-y-4 animate-pulse">
+      <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+      <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+      <div class="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+      </div>
+    </div>
+
+    <!-- Blog Content -->
+    <article *ngIf="!loading && blog" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <!-- Image -->
+      <div *ngIf="blog.imageUrl" class="w-full h-96 overflow-hidden">
+        <img [src]="blog.imageUrl" [alt]="blog.title" class="w-full h-full object-cover">
+      </div>
+
+      <div class="p-8">
+        <!-- Author Info -->
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+            <span class="text-white text-lg font-medium">{{blog.author.charAt(0)}}</span>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{blog.author}}</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{formatDate(blog.createdAt)}}</p>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">{{blog.title}}</h1>
+
+        <!-- Content -->
+        <div class="prose dark:prose-invert max-w-none mb-8">
+          <p class="text-gray-700 dark:text-gray-300">{{blog.content}}</p>
+        </div>
+
+        <!-- Interaction Buttons -->
+        <div class="flex items-center space-x-6 border-t dark:border-gray-700 pt-6">
+          <button 
+            (click)="onLike()"
+            class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-purple-500 transition-colors">
+            <svg class="w-6 h-6" [class.text-red-500]="hasLiked" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span>{{blog.likes}} likes</span>
+          </button>
+
+          <button 
+            (click)="onBookmark()"
+            class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-purple-500 transition-colors">
+            <svg class="w-6 h-6" [class.text-blue-500]="hasBookmarked" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            <span>Bookmark</span>
+          </button>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mt-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Comments ({{blog.comments.length}})</h2>
+          
+          <!-- Comment Form -->
+          <div *ngIf="isLoggedIn()" class="mb-6">
+            <textarea
+              [formControl]="commentControl"
+              placeholder="Add a comment..."
+              class="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+              rows="3"
+            ></textarea>
+            <button
+              (click)="onComment()"
+              class="mt-2 px-4 py-2 bg-blue-600 dark:bg-purple-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-purple-700 transition-colors duration-300">
+              Post Comment
+            </button>
+          </div>
+
+          <!-- Comments List -->
+          <div class="space-y-4">
+            <div *ngFor="let comment of blog.comments" class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                  <span class="text-white text-sm">{{comment.userId.charAt(0)}}</span>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-gray-900 dark:text-white">User {{comment.userId}}</p>
+                </div>
+              </div>
+              <p class="text-gray-700 dark:text-gray-300">{{comment.comment}}</p>
+              <div class="mt-2 flex items-center text-sm text-gray-500">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                {{comment.likes}} likes
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>
